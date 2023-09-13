@@ -132,4 +132,59 @@ public class SQLDAO implements DAO {
         catch (SQLException ignored) {}
         return 0;
     }
+
+    @Override
+    public boolean insertKategorie(int id, String bezeichnung) {
+        try {
+            PreparedStatement insertCommand = sqlConnection.prepareStatement(
+                    "INSERT INTO `kategorie` (id, bezeichnung) VALUE (?, ?)"
+            );
+            insertCommand.setInt(1, id);
+            insertCommand.setString(2, bezeichnung);
+            return (insertCommand.executeUpdate() == 1);
+        }
+        catch (SQLException e) {
+            System.out.println("Probleme beim Einfügen eines Datensatzes");
+            System.err.println( e.getMessage() );
+        }
+        return false;
+    }
+
+    @Override
+    public String getKategorie(int id) {
+        return null;
+    }
+
+    @Override
+    public List<String> getAllKategorien() {
+        ArrayList<String> ergebnisListe = new ArrayList<>();
+        try {
+            Statement sqlCommand = sqlConnection.createStatement();
+            ResultSet sqlResult = sqlCommand.executeQuery("SELECT bezeichnung FROM `kategorie`");
+            while ( sqlResult.next() ) {
+                String bezeichnung = sqlResult.getString("bezeichnung");
+                ergebnisListe.add( bezeichnung );
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Probleme beim Anfragen der Datensätze");
+            System.err.println( e.getMessage() );
+        }
+        return ergebnisListe;
+    }
+
+    @Override
+    public boolean updateKategorie(int id, String bezeichnung) {
+        return false;
+    }
+
+    @Override
+    public void deleteKategorie(int id) {
+
+    }
+
+    @Override
+    public int getLastKategorieID() {
+        return 0;
+    }
 }

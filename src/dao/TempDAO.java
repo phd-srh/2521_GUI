@@ -71,4 +71,34 @@ public class TempDAO implements DAO {
         }
         return lastID;
     }
+
+    @Override
+    public boolean insertKategorie(int id, String bezeichnung) {
+        return false;
+    }
+
+    @Override
+    public String getKategorie(int id) {
+        return null;
+    }
+
+    @Override
+    public List<String> getAllKategorien() {
+        return null;
+    }
+
+    @Override
+    public boolean updateKategorie(int id, String bezeichnung) {
+        return false;
+    }
+
+    @Override
+    public void deleteKategorie(int id) {
+
+    }
+
+    @Override
+    public int getLastKategorieID() {
+        return 0;
+    }
 }

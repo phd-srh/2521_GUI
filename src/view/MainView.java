@@ -15,6 +15,7 @@ public class MainView extends JFrame {
     private JTextField textTextfeld;
     private JButton abfrageButton;
     private JButton löschenButton;
+    private JComboBox<String> kategorieKomboBox;
 
 
     private class ExitButtonDispose implements ActionListener {
@@ -40,7 +41,7 @@ public class MainView extends JFrame {
         // Hauptfenster
         setLayout(new BorderLayout());
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JPanel centerPanel = new JPanel(new GridLayout(2, 2));
+        JPanel centerPanel = new JPanel(new GridLayout(3, 2));
         JPanel bottomPanel = new JPanel(new FlowLayout());
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
@@ -57,6 +58,9 @@ public class MainView extends JFrame {
         centerPanel.add(new JLabel("Text:"));
         textTextfeld = new JTextField();
         centerPanel.add(textTextfeld);
+        centerPanel.add(new JLabel("Kategorie:"));
+        kategorieKomboBox = new JComboBox<>();
+        centerPanel.add(kategorieKomboBox);
 
         // bottomPanel
         abfrageButton = new JButton("Abfrage");
@@ -99,7 +103,14 @@ public class MainView extends JFrame {
     }
 
     public int getID() {
-        return Integer.parseInt( idTextfeld.getText() );
+        int id = 0;
+        try {
+            id = Integer.parseInt(idTextfeld.getText());
+        }
+        catch (NumberFormatException e) {
+            showMessage("Fehlerhafte Eingabe der ID");
+        }
+        return id;
     }
 
     public void setID(int id) {
@@ -127,6 +138,10 @@ public class MainView extends JFrame {
 
     public void setAbfrageButtonListener(ActionListener listener) {
         abfrageButton.addActionListener(listener);
+    }
+
+    public void setKategorieKomboBoxModel(DefaultComboBoxModel<String> kategorieModel) {
+        kategorieKomboBox.setModel(kategorieModel);
     }
 
     public static void main(String[] args) {

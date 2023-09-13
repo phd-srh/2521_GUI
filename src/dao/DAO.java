@@ -11,4 +11,10 @@ public interface DAO {
     void deleteText(int id);                    // Delete
     int getLastID();
 
+    boolean insertKategorie(int id, String bezeichnung);
+    String getKategorie(int id);
+    List<String> getAllKategorien();
+    boolean updateKategorie(int id, String bezeichnung);
+    void deleteKategorie(int id);
+    int getLastKategorieID();
 }
