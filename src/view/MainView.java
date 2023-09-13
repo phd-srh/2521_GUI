@@ -82,8 +82,10 @@ public class MainView extends JFrame {
         // Methode (c) - Lambda Ausdruck
         exitButton.addActionListener(
                 (e) -> {
-                    System.out.println("Lambda Ausdruck schließt MainView");
-                    this.dispose();
+                    //System.out.println("Lambda Ausdruck schließt MainView");
+                    //showMessage("Lambda Ausdruck schließt MainView");
+                    if ( showConfirmation("Wirklich beenden?") )
+                        this.dispose();
                 }
         );
 
@@ -110,6 +112,17 @@ public class MainView extends JFrame {
 
     public void setText(String text) {
         textTextfeld.setText(text);
+    }
+
+    public void showMessage(String message) {
+         JOptionPane.showMessageDialog(this, message, "Achtung",
+                 JOptionPane.WARNING_MESSAGE);
+        //System.out.println("Feddisch mit Message!?");
+    }
+
+    public boolean showConfirmation(String question) {
+        return JOptionPane.showConfirmDialog(this, question, "Nachfrage",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
     }
 
     public void setAbfrageButtonListener(ActionListener listener) {
