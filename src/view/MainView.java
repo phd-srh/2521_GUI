@@ -5,16 +5,29 @@ import controller.MainController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainView extends JFrame {
 
+    private MainView mainView;
     private JTextField idTextfeld;
     private JTextField textTextfeld;
     private JButton abfrageButton;
     private JButton löschenButton;
 
+
+    private class ExitButtonDispose implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Eigene Klasse schließt MainView");
+            mainView.dispose();
+        }
+    }
+
+
     public MainView() {
+        this.mainView = this;
         setSize(400, 200);
         setTitle("GUI Datenbank");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -25,33 +38,62 @@ public class MainView extends JFrame {
 
     private void addComponents() {
         // Hauptfenster
-        setLayout( new BorderLayout() );
-        JPanel topPanel = new JPanel( new FlowLayout(FlowLayout.RIGHT) );
-        JPanel centerPanel = new JPanel( new GridLayout(2, 2) );
-        JPanel bottomPanel = new JPanel( new FlowLayout() );
-        add( topPanel, BorderLayout.NORTH );
-        add( centerPanel, BorderLayout.CENTER );
-        add( bottomPanel, BorderLayout.SOUTH );
+        setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel centerPanel = new JPanel(new GridLayout(2, 2));
+        JPanel bottomPanel = new JPanel(new FlowLayout());
+        add(topPanel, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         // topPanel
-        topPanel.add( new JLabel("Zur Verwaltung von einfachen Texten") );
+        topPanel.add(new JLabel("Zur Verwaltung von einfachen Texten"));
 
         // centerPanel
-        centerPanel.setBorder( new EmptyBorder(5,5,5,5) );
-        centerPanel.add( new JLabel("ID:") );
+        centerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        centerPanel.add(new JLabel("ID:"));
         idTextfeld = new JTextField();
-        centerPanel.add( idTextfeld );
-        centerPanel.add( new JLabel("Text:") );
+        centerPanel.add(idTextfeld);
+        centerPanel.add(new JLabel("Text:"));
         textTextfeld = new JTextField();
-        centerPanel.add( textTextfeld );
+        centerPanel.add(textTextfeld);
 
         // bottomPanel
         abfrageButton = new JButton("Abfrage");
         löschenButton = new JButton("Löschen");
         JButton exitButton = new JButton("Beenden");
-        bottomPanel.add( abfrageButton );
-        bottomPanel.add( löschenButton );
-        bottomPanel.add( exitButton );
+        bottomPanel.add(abfrageButton);
+        bottomPanel.add(löschenButton);
+        bottomPanel.add(exitButton);
+
+        // ExitButton mit Leben füllen:
+        // Methode (a) - eigene Klasse
+//        exitButton.addActionListener( new ExitButtonDispose() );
+
+        // Methode (b) - anonyme Klasse
+//        exitButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.out.println("Anonyme Klasse schließt MainView");
+//                mainView.dispose();
+//            }
+//        });
+
+        // Methode (c) - Lambda Ausdruck
+        exitButton.addActionListener(
+                (e) -> {
+                    System.out.println("Lambda Ausdruck schließt MainView");
+                    this.dispose();
+                }
+        );
+
+        // Methode (d) - Funktionales Interface
+//        exitButton.addActionListener( this::machWasWennManDenExitButtonKlickt );
+    }
+
+    private void machWasWennManDenExitButtonKlickt(ActionEvent e) {
+        System.out.println("Funktionales Interface schließt MainView");
+        this.dispose();
     }
 
     public int getID() {
