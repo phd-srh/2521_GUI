@@ -1,5 +1,7 @@
 package view;
 
+import controller.MainController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -24,7 +26,7 @@ public class MainView extends JFrame {
     private void addComponents() {
         // Hauptfenster
         setLayout( new BorderLayout() );
-        JPanel topPanel = new JPanel( new FlowLayout() );
+        JPanel topPanel = new JPanel( new FlowLayout(FlowLayout.RIGHT) );
         JPanel centerPanel = new JPanel( new GridLayout(2, 2) );
         JPanel bottomPanel = new JPanel( new FlowLayout() );
         add( topPanel, BorderLayout.NORTH );
@@ -46,8 +48,10 @@ public class MainView extends JFrame {
         // bottomPanel
         abfrageButton = new JButton("Abfrage");
         löschenButton = new JButton("Löschen");
+        JButton exitButton = new JButton("Beenden");
         bottomPanel.add( abfrageButton );
         bottomPanel.add( löschenButton );
+        bottomPanel.add( exitButton );
     }
 
     public int getID() {
@@ -68,5 +72,10 @@ public class MainView extends JFrame {
 
     public void setAbfrageButtonListener(ActionListener listener) {
         abfrageButton.addActionListener(listener);
+    }
+
+    public static void main(String[] args) {
+        // reiner Mockup, ganz ohne Funktionen
+        new MainView();
     }
 }
