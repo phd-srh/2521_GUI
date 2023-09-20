@@ -1,20 +1,23 @@
 package dao;
 
+import model.Kategorie;
+import model.Table;
+
 import java.util.List;
 
 public interface DAO {
 
-    boolean insertText(int id, String text);    // Create
-    String getText(int id);                     // Read
-    List<String> getAll();                      // Read Spezial
-    boolean updateText(int id, String text);    // Update
-    void deleteText(int id);                    // Delete
-    int getLastID();
+    boolean insertTable(int id, Table table);    // Create
+    Table getTable(int id);                      // Read
+    List<Table> getAllTables();                  // Read Spezial
+    boolean updateTable(int id, Table table);    // Update
+    void deleteTable(int id);                    // Delete
+    int getLastTableID();
 
-    boolean insertKategorie(int id, String bezeichnung);
-    String getKategorie(int id);
-    List<String> getAllKategorien();
-    boolean updateKategorie(int id, String bezeichnung);
+    boolean insertKategorie(int id, Kategorie kategorie);
+    Kategorie getKategorie(int id);
+    List<Kategorie> getAllKategorien();
+    boolean updateKategorie(int id, Kategorie kategorie);
     void deleteKategorie(int id);
     int getLastKategorieID();
 }

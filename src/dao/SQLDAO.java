@@ -1,5 +1,8 @@
 package dao;
 
+import model.Kategorie;
+import model.Table;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +53,20 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public boolean insertText(int id, String text) {
+    public boolean insertTable(int id, Table table) {
         try {
+            int kid = table.getKategorie().getId();
+            if (getKategorie(kid) == null) {
+                if (!insertKategorie(kid, table.getKategorie()))
+                    return false;
+            }
+
             PreparedStatement insertCommand = sqlConnection.prepareStatement(
-                    "INSERT INTO `table` (id, text) VALUE (?, ?)"
+                    "INSERT INTO `table` (id, text, katid) VALUE (?, ?, ?)"
             );
             insertCommand.setInt(1, id);
-            insertCommand.setString(2, text);
+            insertCommand.setString(2, table.getText());
+            insertCommand.setInt(3, kid);
             return (insertCommand.executeUpdate() == 1);
         }
         catch (SQLException e) {
@@ -67,14 +77,18 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public String getText(int id) {
+    public Table getTable(int id) {
         try {
-            PreparedStatement sqlCommand = sqlConnection.prepareStatement(
-                    "SELECT text FROM `table` WHERE id = ?");
+            PreparedStatement sqlCommand = sqlConnection.prepareStatement("""
+                      SELECT t.id AS tid, text, k.id AS kid, bezeichnung
+                      FROM `table` AS t, kategorie AS k
+                      WHERE t.katid = k.id
+                      AND t.id = ?
+                            """);
             sqlCommand.setInt(1, id);
             ResultSet sqlResult = sqlCommand.executeQuery();
             if ( sqlResult.next() ) {
-                return sqlResult.getString("text");
+                return getTableResultEntry(sqlResult);
             }
         }
         catch (SQLException e) {
@@ -84,15 +98,27 @@ public class SQLDAO implements DAO {
         return null;
     }
 
+    private Table getTableResultEntry(ResultSet sqlResult) throws SQLException {
+        int katid = sqlResult.getInt("kid");
+        String bezeichnung = sqlResult.getString("bezeichnung");
+        Kategorie kategorie = new Kategorie(katid, bezeichnung);
+        int tid = sqlResult.getInt("tid");
+        String text = sqlResult.getString("text");
+        return new Table(tid, text, kategorie);
+    }
+
     @Override
-    public List<String> getAll() {
-        ArrayList<String> ergebnisListe = new ArrayList<>();
+    public List<Table> getAllTables() {
+        ArrayList<Table> ergebnisListe = new ArrayList<>();
         try {
             Statement sqlCommand = sqlConnection.createStatement();
-            ResultSet sqlResult = sqlCommand.executeQuery("SELECT text FROM `table`");
+            ResultSet sqlResult = sqlCommand.executeQuery("""
+                    SELECT t.id AS tid, text, k.id AS kid, bezeichnung
+                    FROM `table` AS t, kategorie AS k
+                    WHERE t.katid = k.id
+                    """);
             while ( sqlResult.next() ) {
-                String text = sqlResult.getString("text");
-                ergebnisListe.add( text );
+                ergebnisListe.add( getTableResultEntry(sqlResult) );
             }
         }
         catch (SQLException e) {
@@ -103,13 +129,13 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public boolean updateText(int id, String text) {
-        deleteText(id);
-        return insertText(id, text);
+    public boolean updateTable(int id, Table table) {
+        deleteTable(id);
+        return insertTable(id, table);
     }
 
     @Override
-    public void deleteText(int id) {
+    public void deleteTable(int id) {
         try {
             PreparedStatement deleteCommand = sqlConnection.prepareStatement(
                     "DELETE FROM `table` WHERE id = ?");
@@ -120,7 +146,7 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public int getLastID() {
+    public int getLastTableID() {
         try {
             Statement sqlCommand = sqlConnection.createStatement();
             ResultSet sqlResult = sqlCommand.executeQuery(
@@ -134,13 +160,13 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public boolean insertKategorie(int id, String bezeichnung) {
+    public boolean insertKategorie(int id, Kategorie kategorie) {
         try {
             PreparedStatement insertCommand = sqlConnection.prepareStatement(
                     "INSERT INTO `kategorie` (id, bezeichnung) VALUE (?, ?)"
             );
             insertCommand.setInt(1, id);
-            insertCommand.setString(2, bezeichnung);
+            insertCommand.setString(2, kategorie.getBezeichnung());
             return (insertCommand.executeUpdate() == 1);
         }
         catch (SQLException e) {
@@ -150,20 +176,38 @@ public class SQLDAO implements DAO {
         return false;
     }
 
+    private Kategorie getKategorieResultEntry(ResultSet sqlResult) throws SQLException {
+        return new Kategorie(sqlResult.getInt("id"),
+                        sqlResult.getString("bezeichnung"));
+    }
+
     @Override
-    public String getKategorie(int id) {
+    public Kategorie getKategorie(int id) {
+        try {
+            PreparedStatement sqlCommand = sqlConnection.prepareStatement(
+                    "SELECT id, bezeichnung FROM `kategorie` WHERE id = ?");
+            sqlCommand.setInt(1, id);
+            ResultSet sqlResult = sqlCommand.executeQuery();
+            if ( sqlResult.next() ) {
+                return getKategorieResultEntry(sqlResult);
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Probleme beim Anfragen der Datensätze");
+            System.err.println( e.getMessage() );
+        }
         return null;
     }
 
     @Override
-    public List<String> getAllKategorien() {
-        ArrayList<String> ergebnisListe = new ArrayList<>();
+    public List<Kategorie> getAllKategorien() {
+        ArrayList<Kategorie> ergebnisListe = new ArrayList<>();
         try {
             Statement sqlCommand = sqlConnection.createStatement();
-            ResultSet sqlResult = sqlCommand.executeQuery("SELECT bezeichnung FROM `kategorie`");
+            ResultSet sqlResult = sqlCommand.executeQuery(
+                    "SELECT id, bezeichnung FROM `kategorie`");
             while ( sqlResult.next() ) {
-                String bezeichnung = sqlResult.getString("bezeichnung");
-                ergebnisListe.add( bezeichnung );
+                ergebnisListe.add( getKategorieResultEntry(sqlResult) );
             }
         }
         catch (SQLException e) {
@@ -174,17 +218,33 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public boolean updateKategorie(int id, String bezeichnung) {
-        return false;
+    public boolean updateKategorie(int id, Kategorie kategorie) {
+        deleteKategorie(id);
+        return insertKategorie(id, kategorie);
     }
 
     @Override
     public void deleteKategorie(int id) {
-
+        try {
+            PreparedStatement deleteCommand = sqlConnection.prepareStatement(
+                    "DELETE FROM kategorie WHERE id = ?");
+            deleteCommand.setInt(1, id);
+            deleteCommand.execute();
+        }
+        catch (SQLException ignored) {}
     }
 
     @Override
     public int getLastKategorieID() {
+        try {
+            Statement sqlCommand = sqlConnection.createStatement();
+            ResultSet sqlResult = sqlCommand.executeQuery(
+                    "SELECT MAX(id) AS maxid FROM kategorie"
+            );
+            if (sqlResult.next())
+                return sqlResult.getInt("maxid");
+        }
+        catch (SQLException ignored) {}
         return 0;
     }
 }

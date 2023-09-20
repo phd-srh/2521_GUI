@@ -2,6 +2,8 @@ package controller;
 
 import dao.DAO;
 import dao.SQLDAO;
+import model.Kategorie;
+import model.Table;
 import view.MainView;
 
 import javax.swing.*;
@@ -17,8 +19,8 @@ public class MainController {
         this.mainView = mainView;
 
         DefaultComboBoxModel<String> kategorieModel = new DefaultComboBoxModel<>();
-        for (String kategorie : db.getAllKategorien()) {
-            kategorieModel.addElement(kategorie);
+        for (Kategorie kategorie : db.getAllKategorien()) {
+            kategorieModel.addElement( kategorie.getBezeichnung() );
         }
         mainView.setKategorieKomboBoxModel(kategorieModel);
 
@@ -27,8 +29,8 @@ public class MainController {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         int id = mainView.getID();
-                        String text = db.getText(id);
-                        mainView.setText(text);
+                        Table table = db.getTable(id);
+                        mainView.setText(table.getText());
                     }
                 }
         );

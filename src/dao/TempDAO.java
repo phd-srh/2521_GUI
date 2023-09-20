@@ -1,5 +1,6 @@
 package dao;
 
+import model.Kategorie;
 import model.Table;
 
 import java.util.ArrayList;
@@ -8,20 +9,27 @@ import java.util.List;
 public class TempDAO implements DAO {
     // interner Speicher
     private List<Table> tableList;
+    private List<Kategorie> kategorieList;
 
     public TempDAO() {
         tableList = new ArrayList<>();
+        kategorieList = new ArrayList<>();
+
+        insertKategorie( 1, new Kategorie(1, "Tisch") );
+        insertKategorie( 2, new Kategorie(2, "Schrank") );
+        insertKategorie( 3, new Kategorie(3, "Stuhl") );
+
         // einige Datensätze einfügen
-        insertText( getLastID()+1, "Test1" );
-        insertText( getLastID()+1, "Apfel" );
-        insertText( getLastID()+1, "Keksdose" );
-        insertText( getLastID()+1, "Bleistift" );
+        insertTable( 1, new Table(1, "Test1", getKategorie(1)) );
+        insertTable( 2, new Table(2, "Apfel", getKategorie(2)) );
+        insertTable( 3, new Table(3, "Keksdose", getKategorie(3)) );
+        insertTable( 4, new Table(4, "Bleistift", getKategorie(2)) );
     }
 
     @Override
-    public boolean insertText(int id, String text) {
-        if (getText(id) == null) {
-            tableList.add(new Table(id, text));
+    public boolean insertTable(int id, Table table) {
+        if (getTable(id) == null) {
+            tableList.add( table.clone() );
             return true;
         }
         else
@@ -29,31 +37,31 @@ public class TempDAO implements DAO {
     }
 
     @Override
-    public String getText(int id) {
+    public Table getTable(int id) {
         for (Table table : tableList) {
             if (table.getId() == id)
-                return table.getText();
+                return table.clone();
         }
         return null;
     }
 
     @Override
-    public List<String> getAll() {
-        List<String> stringListe = new ArrayList<>();
-        for (Table table : tableList) {
-            stringListe.add( table.getText() );
+    public List<Table> getAllTables() {
+        List<Table> copyListe = new ArrayList<>();
+        for (Table table : this.tableList) {
+            copyListe.add( table.clone() );
         }
-        return stringListe;
+        return copyListe;
     }
 
     @Override
-    public boolean updateText(int id, String text) {
-        deleteText(id);
-        return insertText(id, text);
+    public boolean updateTable(int id, Table table) {
+        deleteTable(id);
+        return insertTable(id, table);
     }
 
     @Override
-    public void deleteText(int id) {
+    public void deleteTable(int id) {
         for (int i=0; i<tableList.size(); i++) {
             if (tableList.get(i).getId() == id) {
                 tableList.remove(i);
@@ -63,7 +71,7 @@ public class TempDAO implements DAO {
     }
 
     @Override
-    public int getLastID() {
+    public int getLastTableID() {
         int lastID = 0;
         for (Table table : tableList) {
             if (table.getId() > lastID)
@@ -73,22 +81,22 @@ public class TempDAO implements DAO {
     }
 
     @Override
-    public boolean insertKategorie(int id, String bezeichnung) {
+    public boolean insertKategorie(int id, Kategorie kategorie) {
         return false;
     }
 
     @Override
-    public String getKategorie(int id) {
+    public Kategorie getKategorie(int id) {
         return null;
     }
 
     @Override
-    public List<String> getAllKategorien() {
+    public List<Kategorie> getAllKategorien() {
         return null;
     }
 
     @Override
-    public boolean updateKategorie(int id, String bezeichnung) {
+    public boolean updateKategorie(int id, Kategorie kategorie) {
         return false;
     }
 
@@ -101,4 +109,5 @@ public class TempDAO implements DAO {
     public int getLastKategorieID() {
         return 0;
     }
+
 }

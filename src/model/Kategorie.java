@@ -24,4 +24,8 @@ public class Kategorie {
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
     }
+
+    public Kategorie clone() {
+        return new Kategorie(id, bezeichnung);
+    }
 }
