@@ -125,6 +125,22 @@ public class MainView extends JFrame {
         textTextfeld.setText(text);
     }
 
+    public String getKategorie() {
+        return (String)kategorieKomboBox.getSelectedItem();
+    }
+
+    public void setKategorie(String kategorie) {
+        for (int i=0; i < kategorieKomboBox.getItemCount(); i++) {
+            if (kategorieKomboBox.getItemAt(i).equals(kategorie)) {
+                kategorieKomboBox.setSelectedIndex(i);
+                return;
+            }
+        }
+        // nicht gefunden, Kategorie muss ergänzt werden
+        kategorieKomboBox.addItem(kategorie);
+        kategorieKomboBox.setSelectedIndex( kategorieKomboBox.getItemCount()-1 );
+    }
+
     public void showMessage(String message) {
          JOptionPane.showMessageDialog(this, message, "Achtung",
                  JOptionPane.WARNING_MESSAGE);

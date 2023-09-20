@@ -24,16 +24,14 @@ public class MainController {
         }
         mainView.setKategorieKomboBoxModel(kategorieModel);
 
-        mainView.setAbfrageButtonListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        int id = mainView.getID();
-                        Table table = db.getTable(id);
-                        mainView.setText(table.getText());
-                    }
-                }
-        );
+        mainView.setAbfrageButtonListener( this::performAbfragenButton );
+    }
+
+    private void performAbfragenButton(ActionEvent e) {
+        int id = mainView.getID();
+        Table table = db.getTable(id);
+        mainView.setText(table.getText());
+        mainView.setKategorie(table.getKategorie().getBezeichnung());
     }
 
     public static void main(String[] args) {
