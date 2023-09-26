@@ -13,7 +13,7 @@ public class MainView extends JFrame {
     private MainView mainView;
     private JTextField idTextfeld;
     private JTextField textTextfeld;
-    private JButton abfrageButton;
+    private JButton abfrageButton, hinzufügenButton;
     private JButton löschenButton;
     private JComboBox<String> kategorieKomboBox;
 
@@ -65,9 +65,11 @@ public class MainView extends JFrame {
 
         // bottomPanel
         abfrageButton = new JButton("Abfrage");
+        hinzufügenButton = new JButton("Hinzufügen");
         löschenButton = new JButton("Löschen");
         JButton exitButton = new JButton("Beenden");
         bottomPanel.add(abfrageButton);
+        bottomPanel.add(hinzufügenButton);
         bottomPanel.add(löschenButton);
         bottomPanel.add(exitButton);
 
@@ -85,14 +87,14 @@ public class MainView extends JFrame {
 //        });
 
         // Methode (c) - Lambda Ausdruck
-//        exitButton.addActionListener(
-//                (ActionEvent e) -> {
-//                    //System.out.println("Lambda Ausdruck schließt MainView");
-//                    //showMessage("Lambda Ausdruck schließt MainView");
-//                    if ( showConfirmation("Wirklich beenden?") )
-//                        this.dispose();
-//                }
-//        );
+        exitButton.addActionListener(
+                (ActionEvent e) -> {
+                    //System.out.println("Lambda Ausdruck schließt MainView");
+                    //showMessage("Lambda Ausdruck schließt MainView");
+// - das nervt -   if ( showConfirmation("Wirklich beenden?") )
+                        this.dispose();
+                }
+        );
 
         // Methode (d) - Funktionales Interface
 //        exitButton.addActionListener( this::machWasWennManDenExitButtonKlickt );
@@ -155,6 +157,10 @@ public class MainView extends JFrame {
 
     public void setAbfrageButtonListener(ActionListener listener) {
         abfrageButton.addActionListener(listener);
+    }
+
+    public void setLöschenButtonListener(ActionListener listener) {
+        löschenButton.addActionListener(listener);
     }
 
     public void setKategorieKomboBoxModel(DefaultComboBoxModel<String> kategorieModel) {

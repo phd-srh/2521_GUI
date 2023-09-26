@@ -30,6 +30,30 @@ public class MainController {
         mainView.setKategorieKomboBoxModel(kategorieModel);
 
         mainView.setAbfrageButtonListener( this::performAbfragenButton );
+        mainView.setLöschenButtonListener( this::performLöschenButton );
+    }
+
+    private void performLöschenButton(ActionEvent e) {
+        int id = mainView.getID();
+        Table table = db.getTable(id);
+        if (table != null &&
+                mainView.showConfirmation("Diesen Datensatz wirklich löschen")) {
+            db.deleteTable(id);
+            zeigeTable(null); // Eingabefelder löschen
+        }
+    }
+
+    private void zeigeTable(Table t) {
+        if (t == null) {
+            mainView.setID(0);
+            mainView.setText("");
+            mainView.setKategorie("");
+        }
+        else {
+            mainView.setID(t.getId());
+            mainView.setText(t.getText());
+            mainView.setKategorie(t.getKategorie().getBezeichnung());
+        }
     }
 
     private void performAbfragenButton(ActionEvent e) {
@@ -37,9 +61,8 @@ public class MainController {
         logger.info("Bis hier läufts");
         Table table = db.getTable(id);
         if (table != null) {
-            mainView.setText(table.getText());
             logger.info("Das sehe ich schon nicht mehr!");
-            mainView.setKategorie(table.getKategorie().getBezeichnung());
+            zeigeTable(table);
         }
         else
             mainView.showMessage("Datensatz nicht vorhanden!");
