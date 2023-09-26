@@ -15,7 +15,8 @@ public interface DAO {
     int getLastTableID();
 
     boolean insertKategorie(int id, Kategorie kategorie);
-    Kategorie getKategorie(int id);
+    Kategorie getKategorieByID(int id);
+    Kategorie getKategorieByBezeichnung(String bezeichnung);
     List<Kategorie> getAllKategorien();
     boolean updateKategorie(int id, Kategorie kategorie);
     void deleteKategorie(int id);

@@ -30,7 +30,34 @@ public class MainController {
         mainView.setKategorieKomboBoxModel(kategorieModel);
 
         mainView.setAbfrageButtonListener( this::performAbfragenButton );
+        mainView.setHinzufügenButtonListener( this::performHinzufügenButton );
         mainView.setLöschenButtonListener( this::performLöschenButton );
+    }
+
+    private void performHinzufügenButton(ActionEvent e) {
+        int id = mainView.getID();
+        String text = mainView.getText();
+        String kategorieBezeichnung = mainView.getKategorie();
+
+        if (text.isBlank() || kategorieBezeichnung.isBlank()) {
+            mainView.showMessage("Bitte sinnvolle Daten eingeben!");
+            return;
+        }
+
+        if (id == 0) {
+            id = db.getLastTableID() + 1;
+            mainView.setID(id);
+        }
+
+        Kategorie kategorie = db.getKategorieByBezeichnung(kategorieBezeichnung);
+        if (kategorie == null) {
+            int kategorieID = db.getLastKategorieID() + 1;
+            kategorie = new Kategorie(kategorieID, kategorieBezeichnung);
+            db.insertKategorie(kategorieID, kategorie);
+        }
+        Table neuerDatensatz = new Table(id, text, kategorie);
+        if ( ! db.insertTable(id, neuerDatensatz) )
+            mainView.showMessage("Fehler beim Einfügen des neuen Datensatzes");
     }
 
     private void performLöschenButton(ActionEvent e) {

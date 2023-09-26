@@ -54,6 +54,7 @@ public class MainView extends JFrame {
         centerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         centerPanel.add(new JLabel("ID:"));
         idTextfeld = new JTextField();
+        idTextfeld.setToolTipText("bei 0 wird beim Hinzufügen die nächste freie ID benutzt");
         centerPanel.add(idTextfeld);
         centerPanel.add(new JLabel("Text:"));
         textTextfeld = new JTextField();
@@ -157,6 +158,10 @@ public class MainView extends JFrame {
 
     public void setAbfrageButtonListener(ActionListener listener) {
         abfrageButton.addActionListener(listener);
+    }
+
+    public void setHinzufügenButtonListener(ActionListener listener) {
+        hinzufügenButton.addActionListener(listener);
     }
 
     public void setLöschenButtonListener(ActionListener listener) {

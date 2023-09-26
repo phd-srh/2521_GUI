@@ -56,7 +56,7 @@ public class SQLDAO implements DAO {
     public boolean insertTable(int id, Table table) {
         try {
             int kid = table.getKategorie().getId();
-            if (getKategorie(kid) == null) {
+            if (getKategorieByID(kid) == null) {
                 if (!insertKategorie(kid, table.getKategorie()))
                     return false;
             }
@@ -182,11 +182,29 @@ public class SQLDAO implements DAO {
     }
 
     @Override
-    public Kategorie getKategorie(int id) {
+    public Kategorie getKategorieByID(int id) {
         try {
             PreparedStatement sqlCommand = sqlConnection.prepareStatement(
                     "SELECT id, bezeichnung FROM `kategorie` WHERE id = ?");
             sqlCommand.setInt(1, id);
+            ResultSet sqlResult = sqlCommand.executeQuery();
+            if ( sqlResult.next() ) {
+                return getKategorieResultEntry(sqlResult);
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Probleme beim Anfragen der Datensätze");
+            System.err.println( e.getMessage() );
+        }
+        return null;
+    }
+
+    @Override
+    public Kategorie getKategorieByBezeichnung(String bezeichnung) {
+        try {
+            PreparedStatement sqlCommand = sqlConnection.prepareStatement(
+                    "SELECT id, bezeichnung FROM `kategorie` WHERE bezeichnung LIKE ?");
+            sqlCommand.setString(1, bezeichnung);
             ResultSet sqlResult = sqlCommand.executeQuery();
             if ( sqlResult.next() ) {
                 return getKategorieResultEntry(sqlResult);
