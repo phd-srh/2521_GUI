@@ -60,6 +60,7 @@ public class MainView extends JFrame {
         centerPanel.add(textTextfeld);
         centerPanel.add(new JLabel("Kategorie:"));
         kategorieKomboBox = new JComboBox<>();
+        kategorieKomboBox.setEditable(true);
         centerPanel.add(kategorieKomboBox);
 
         // bottomPanel
@@ -84,14 +85,14 @@ public class MainView extends JFrame {
 //        });
 
         // Methode (c) - Lambda Ausdruck
-        exitButton.addActionListener(
-                (e) -> {
-                    //System.out.println("Lambda Ausdruck schließt MainView");
-                    //showMessage("Lambda Ausdruck schließt MainView");
-                    if ( showConfirmation("Wirklich beenden?") )
-                        this.dispose();
-                }
-        );
+//        exitButton.addActionListener(
+//                (ActionEvent e) -> {
+//                    //System.out.println("Lambda Ausdruck schließt MainView");
+//                    //showMessage("Lambda Ausdruck schließt MainView");
+//                    if ( showConfirmation("Wirklich beenden?") )
+//                        this.dispose();
+//                }
+//        );
 
         // Methode (d) - Funktionales Interface
 //        exitButton.addActionListener( this::machWasWennManDenExitButtonKlickt );
