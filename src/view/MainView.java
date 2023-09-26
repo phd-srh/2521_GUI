@@ -1,7 +1,5 @@
 package view;
 
-import controller.MainController;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -112,7 +110,7 @@ public class MainView extends JFrame {
             id = Integer.parseInt(idTextfeld.getText());
         }
         catch (NumberFormatException e) {
-            showMessage("Fehlerhafte Eingabe der ID");
+            showWarning("Fehlerhafte Eingabe der ID");
         }
         return id;
     }
@@ -145,10 +143,15 @@ public class MainView extends JFrame {
         kategorieKomboBox.setSelectedIndex( kategorieKomboBox.getItemCount()-1 );
     }
 
-    public void showMessage(String message) {
-         JOptionPane.showMessageDialog(this, message, "Achtung",
+    public void showWarning(String message) {
+         JOptionPane.showMessageDialog(this, message, "Warnung",
                  JOptionPane.WARNING_MESSAGE);
         //System.out.println("Feddisch mit Message!?");
+    }
+
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Information",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     public boolean showConfirmation(String question) {

@@ -40,7 +40,7 @@ public class MainController {
         String kategorieBezeichnung = mainView.getKategorie();
 
         if (text.isBlank() || kategorieBezeichnung.isBlank()) {
-            mainView.showMessage("Bitte sinnvolle Daten eingeben!");
+            mainView.showWarning("Bitte sinnvolle Daten eingeben!");
             return;
         }
 
@@ -56,8 +56,10 @@ public class MainController {
             db.insertKategorie(kategorieID, kategorie);
         }
         Table neuerDatensatz = new Table(id, text, kategorie);
-        if ( ! db.insertTable(id, neuerDatensatz) )
-            mainView.showMessage("Fehler beim Einfügen des neuen Datensatzes");
+        if ( db.insertTable(id, neuerDatensatz) )
+            mainView.showMessage("Datensatz erfolgreich hinzugefügt!");
+        else
+            mainView.showWarning("Fehler beim Einfügen des neuen Datensatzes");
     }
 
     private void performLöschenButton(ActionEvent e) {
@@ -92,7 +94,7 @@ public class MainController {
             zeigeTable(table);
         }
         else
-            mainView.showMessage("Datensatz nicht vorhanden!");
+            mainView.showWarning("Datensatz nicht vorhanden!");
     }
 
     public static void main(String[] args) {
