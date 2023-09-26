@@ -115,6 +115,10 @@ public class MainView extends JFrame {
         return id;
     }
 
+    public void clearID() {
+        idTextfeld.setText("");
+    }
+
     public void setID(int id) {
         idTextfeld.setText( String.valueOf(id) );
     }

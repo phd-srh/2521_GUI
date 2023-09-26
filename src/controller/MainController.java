@@ -74,7 +74,7 @@ public class MainController {
 
     private void zeigeTable(Table t) {
         if (t == null) {
-            mainView.setID(0);
+            mainView.clearID();
             mainView.setText("");
             mainView.setKategorie("");
         }
