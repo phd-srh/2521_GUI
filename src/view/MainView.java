@@ -136,6 +136,11 @@ public class MainView extends JFrame {
     }
 
     public void setKategorie(String kategorie) {
+        if (kategorie == null || kategorie.isBlank()) {
+            kategorieKomboBox.setSelectedIndex(0);
+            return;
+        }
+
         for (int i=0; i < kategorieKomboBox.getItemCount(); i++) {
             if (kategorieKomboBox.getItemAt(i).equals(kategorie)) {
                 kategorieKomboBox.setSelectedIndex(i);
