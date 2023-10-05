@@ -1,10 +1,13 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class AlleAnzeigenView extends JFrame {
 
     private JList<String> alleDatensätzeListe;
+    private JButton exportButton;
 
     public AlleAnzeigenView() {
         setSize(400, 100);
@@ -16,12 +19,19 @@ public class AlleAnzeigenView extends JFrame {
     }
 
     private void addComponents() {
+        setLayout( new BorderLayout() );
         JScrollPane scrollPane = new JScrollPane();
         alleDatensätzeListe = new JList<>();
         scrollPane.setViewportView(alleDatensätzeListe);
-        add(scrollPane);
-        JButton exportButton = new JButton("Export");
-        add(exportButton);
+        add(scrollPane, BorderLayout.CENTER);
+        JPanel bottomPanel = new JPanel( new FlowLayout( FlowLayout.LEFT ) );
+        exportButton = new JButton("Export");
+        bottomPanel.add(exportButton);
+        add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    public void setExportButtonListener(ActionListener listener) {
+        exportButton.addActionListener(listener);
     }
 
     public void setAlleDatensätzeListeDefaultModel(DefaultListModel<String> defaultModel) {

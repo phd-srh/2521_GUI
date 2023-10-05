@@ -49,6 +49,14 @@ public class MainController {
         for (Table table : db.getAllTables()) {
             defaultListModel.addElement( table.toString() );
         }
+        alleAnzeigenView.setExportButtonListener( this::performExportButton );
+    }
+
+    private void performExportButton(ActionEvent e) {
+        System.out.println("Da hat einer den Export Button geklickt");
+        // TODO: hier soll natürlich mehr passieren
+        // z.B. eine Datei öffnen (evtl. ein DateiÖffnenDialog anzeigen),
+        // Inhalt des Listenfensters in Datei schreiben, Datei wieder schließen
     }
 
     private void performHinzufügenButton(ActionEvent e) {
