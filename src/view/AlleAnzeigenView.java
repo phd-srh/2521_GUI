@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -10,7 +11,7 @@ public class AlleAnzeigenView extends JFrame {
     private JButton exportButton;
 
     public AlleAnzeigenView() {
-        setSize(400, 100);
+        setSize(300, 600);
         setTitle("Alle Datensätze");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addComponents();
@@ -28,6 +29,12 @@ public class AlleAnzeigenView extends JFrame {
         exportButton = new JButton("Export");
         bottomPanel.add(exportButton);
         add(bottomPanel, BorderLayout.SOUTH);
+        JPanel topPanel = new JPanel( new GridLayout(1,3) );
+        topPanel.setBorder( new EmptyBorder(5, 5, 5, 5) );
+        add(topPanel, BorderLayout.NORTH);
+        topPanel.add( new JTextField() );
+        topPanel.add( new JLabel() );
+        topPanel.add( new JLabel() );
     }
 
     public void setExportButtonListener(ActionListener listener) {
