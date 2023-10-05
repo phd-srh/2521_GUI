@@ -11,8 +11,7 @@ public class MainView extends JFrame {
     private MainView mainView;
     private JTextField idTextfeld;
     private JTextField textTextfeld;
-    private JButton abfrageButton, hinzufügenButton;
-    private JButton löschenButton;
+    private JButton abfrageButton, hinzufügenButton, löschenButton, alleAnzeigenButton;
     private JComboBox<String> kategorieKomboBox;
 
 
@@ -66,10 +65,12 @@ public class MainView extends JFrame {
         abfrageButton = new JButton("Abfrage");
         hinzufügenButton = new JButton("Hinzufügen");
         löschenButton = new JButton("Löschen");
+        alleAnzeigenButton = new JButton("Alle anzeigen");
         JButton exitButton = new JButton("Beenden");
         bottomPanel.add(abfrageButton);
         bottomPanel.add(hinzufügenButton);
         bottomPanel.add(löschenButton);
+        bottomPanel.add(alleAnzeigenButton);
         bottomPanel.add(exitButton);
 
         // ExitButton mit Leben füllen:
@@ -178,6 +179,10 @@ public class MainView extends JFrame {
 
     public void setLöschenButtonListener(ActionListener listener) {
         löschenButton.addActionListener(listener);
+    }
+
+    public void setAlleAnzeigenButtonListener(ActionListener listener) {
+        alleAnzeigenButton.addActionListener(listener);
     }
 
     public void setKategorieKomboBoxModel(DefaultComboBoxModel<String> kategorieModel) {

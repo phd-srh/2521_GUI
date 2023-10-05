@@ -4,6 +4,7 @@ import dao.DAO;
 import dao.SQLDAO;
 import model.Kategorie;
 import model.Table;
+import view.AlleAnzeigenView;
 import view.MainView;
 
 import javax.swing.*;
@@ -32,6 +33,22 @@ public class MainController {
         mainView.setAbfrageButtonListener( this::performAbfragenButton );
         mainView.setHinzufügenButtonListener( this::performHinzufügenButton );
         mainView.setLöschenButtonListener( this::performLöschenButton );
+        mainView.setAlleAnzeigenButtonListener( this::performAlleAnzeigenButton );
+    }
+
+    private void performAlleAnzeigenButton(ActionEvent e) {
+        // TODO
+        // + neues Fenster zur Anzeige einer Liste
+        // - entweder nur einmal eine Liste anzeigen, oder das Hauptfenster sperren
+        // - Doppelklick in der List zeigt Datensatz im Hauptfenster an
+        // + das neue Fenster soll auch einfach geschlossen werden können
+        // - im Fenster soll ein Export-Button angezeigt werden
+        AlleAnzeigenView alleAnzeigenView = new AlleAnzeigenView();
+        DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+        alleAnzeigenView.setAlleDatensätzeListeDefaultModel(defaultListModel);
+        for (Table table : db.getAllTables()) {
+            defaultListModel.addElement( table.toString() );
+        }
     }
 
     private void performHinzufügenButton(ActionEvent e) {

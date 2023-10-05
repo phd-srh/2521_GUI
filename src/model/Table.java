@@ -39,4 +39,9 @@ public class Table /* extends Object */ {
     public Table clone() {
         return new Table(id, text, kategorie);
     }
+
+    @Override
+    public String toString() {
+        return id + ": " + text + " (" + kategorie + ")";
+    }
 }

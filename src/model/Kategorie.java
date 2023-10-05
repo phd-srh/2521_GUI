@@ -28,4 +28,9 @@ public class Kategorie {
     public Kategorie clone() {
         return new Kategorie(id, bezeichnung);
     }
+
+    @Override
+    public String toString() {
+        return bezeichnung;
+    }
 }
