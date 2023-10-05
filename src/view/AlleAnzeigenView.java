@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -29,12 +30,15 @@ public class AlleAnzeigenView extends JFrame {
         exportButton = new JButton("Export");
         bottomPanel.add(exportButton);
         add(bottomPanel, BorderLayout.SOUTH);
-        JPanel topPanel = new JPanel( new GridLayout(1,3) );
-        topPanel.setBorder( new EmptyBorder(5, 5, 5, 5) );
+        JPanel topPanel = new JPanel( new FlowLayout(FlowLayout.LEFT) );
+        topPanel.setBorder( new EmptyBorder(1,1,1,1) );
         add(topPanel, BorderLayout.NORTH);
-        topPanel.add( new JTextField() );
-        topPanel.add( new JLabel() );
-        topPanel.add( new JLabel() );
+        JTextField textField = new JTextField();
+        textField.setColumns(12);
+        //textField.setBorder(new LineBorder(1, 1, 1, 1));
+        topPanel.add( textField );
+        //topPanel.add( new JLabel() );
+        //topPanel.add( new JLabel() );
     }
 
     public void setExportButtonListener(ActionListener listener) {
