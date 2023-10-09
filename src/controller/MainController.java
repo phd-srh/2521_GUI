@@ -9,6 +9,8 @@ import view.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +52,30 @@ public class MainController {
             defaultListModel.addElement( table.toString() );
         }
         alleAnzeigenView.setExportButtonListener( this::performExportButton );
+        alleAnzeigenView.setTextFieldListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                //System.out.println("keyTyped event!");
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                //System.out.println("keyPressed event!");
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String filter = alleAnzeigenView.getTextFieldText().toLowerCase();
+                DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+                for (Table table : db.getAllTables()) {
+                    String displayText = table.toString();
+                    if ( displayText.toLowerCase().contains(filter) )
+                        defaultListModel.addElement( displayText );
+                }
+                alleAnzeigenView.setAlleDatensätzeListeDefaultModel(defaultListModel);
+            }
+        });
+
     }
 
     private void performExportButton(ActionEvent e) {
