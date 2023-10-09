@@ -41,7 +41,15 @@ public class MainController {
     }
 
     private void performVorwärtsButton(ActionEvent e) {
-
+        int id = mainView.getID();
+        Table table = null;
+        do {
+            id++;
+            if (id > db.getLastTableID()) break;
+            table = db.getTable(id);
+        } while (table == null);
+        if (table != null)
+            zeigeTable(table);
     }
 
     private void performRückwärtsButton(ActionEvent e) {
