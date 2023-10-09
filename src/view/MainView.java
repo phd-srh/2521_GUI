@@ -12,6 +12,7 @@ public class MainView extends JFrame {
     private JTextField idTextfeld;
     private JTextField textTextfeld;
     private JButton abfrageButton, hinzufügenButton, löschenButton, alleAnzeigenButton;
+    private JButton vorwärtsButton, rückwärtsButton;
     private JComboBox<String> kategorieKomboBox;
 
 
@@ -67,11 +68,15 @@ public class MainView extends JFrame {
         löschenButton = new JButton("Löschen");
         alleAnzeigenButton = new JButton("Alle anzeigen");
         JButton exitButton = new JButton("Beenden");
+        vorwärtsButton = new JButton("->");
+        rückwärtsButton = new JButton("<-");
+        bottomPanel.add(rückwärtsButton);
         bottomPanel.add(abfrageButton);
         bottomPanel.add(hinzufügenButton);
         bottomPanel.add(löschenButton);
         bottomPanel.add(alleAnzeigenButton);
         bottomPanel.add(exitButton);
+        bottomPanel.add(vorwärtsButton);
 
         // ExitButton mit Leben füllen:
         // Methode (a) - eigene Klasse
@@ -183,6 +188,14 @@ public class MainView extends JFrame {
 
     public void setAlleAnzeigenButtonListener(ActionListener listener) {
         alleAnzeigenButton.addActionListener(listener);
+    }
+
+    public void setVorwärtsButtonListener(ActionListener listener) {
+        vorwärtsButton.addActionListener(listener);
+    }
+
+    public void setRückwärtsButtonListener(ActionListener listener) {
+        rückwärtsButton.addActionListener(listener);
     }
 
     public void setKategorieKomboBoxModel(DefaultComboBoxModel<String> kategorieModel) {

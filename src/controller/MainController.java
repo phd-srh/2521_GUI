@@ -36,6 +36,24 @@ public class MainController {
         mainView.setHinzufügenButtonListener( this::performHinzufügenButton );
         mainView.setLöschenButtonListener( this::performLöschenButton );
         mainView.setAlleAnzeigenButtonListener( this::performAlleAnzeigenButton );
+        mainView.setRückwärtsButtonListener( this::performRückwärtsButton );
+        mainView.setVorwärtsButtonListener( this::performVorwärtsButton );
+    }
+
+    private void performVorwärtsButton(ActionEvent e) {
+
+    }
+
+    private void performRückwärtsButton(ActionEvent e) {
+        int id = mainView.getID();
+        Table table = null;
+        do {
+            id--;
+            if (id < 1) break;
+            table = db.getTable(id);
+        } while (table == null);
+        if (table != null)
+            zeigeTable(table);
     }
 
     private void performAlleAnzeigenButton(ActionEvent e) {
@@ -75,7 +93,6 @@ public class MainController {
                 alleAnzeigenView.setAlleDatensätzeListeDefaultModel(defaultListModel);
             }
         });
-
     }
 
     private void performExportButton(ActionEvent e) {
