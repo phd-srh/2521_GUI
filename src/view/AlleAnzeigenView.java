@@ -6,6 +6,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowListener;
 
 public class AlleAnzeigenView extends JFrame {
 
@@ -57,6 +58,10 @@ public class AlleAnzeigenView extends JFrame {
 
     public void setAlleDatensätzeListeDefaultModel(DefaultListModel<String> defaultModel) {
         alleDatensätzeListe.setModel(defaultModel);
+    }
+
+    public void setAlleAnzeigenViewWindowListener(WindowListener listener) {
+        addWindowListener(listener);
     }
 
     public static void main(String[] args) {

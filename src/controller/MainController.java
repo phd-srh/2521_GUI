@@ -2,15 +2,14 @@ package controller;
 
 import dao.DAO;
 import dao.SQLDAO;
+import dao.TempDAO;
 import model.Kategorie;
 import model.Table;
 import view.AlleAnzeigenView;
 import view.MainView;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +69,9 @@ public class MainController {
         // - entweder nur einmal eine Liste anzeigen, oder das Hauptfenster sperren
         // - Doppelklick in der List zeigt Datensatz im Hauptfenster an
         // + das neue Fenster soll auch einfach geschlossen werden können
-        // - im Fenster soll ein Export-Button angezeigt werden
+        // + im Fenster soll ein Export-Button angezeigt werden
+        mainView.setEnabled(false);
+
         AlleAnzeigenView alleAnzeigenView = new AlleAnzeigenView();
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         alleAnzeigenView.setAlleDatensätzeListeDefaultModel(defaultListModel);
@@ -100,6 +101,31 @@ public class MainController {
                 }
                 alleAnzeigenView.setAlleDatensätzeListeDefaultModel(defaultListModel);
             }
+        });
+        alleAnzeigenView.setAlleAnzeigenViewWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+
+            @Override
+            public void windowClosing(WindowEvent e) {}
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                mainView.setEnabled(true);
+                mainView.requestFocus();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
         });
     }
 
