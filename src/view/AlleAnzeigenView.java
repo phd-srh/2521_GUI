@@ -6,6 +6,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowListener;
 
 public class AlleAnzeigenView extends JFrame {
@@ -62,6 +63,14 @@ public class AlleAnzeigenView extends JFrame {
 
     public void setAlleAnzeigenViewWindowListener(WindowListener listener) {
         addWindowListener(listener);
+    }
+
+    public void setAlleDatensätzeListeMouseListener(MouseListener listener) {
+        alleDatensätzeListe.addMouseListener(listener);
+    }
+
+    public String getSelectedItem() {
+        return alleDatensätzeListe.getSelectedValue();
     }
 
     public static void main(String[] args) {

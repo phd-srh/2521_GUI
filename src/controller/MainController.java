@@ -127,6 +127,36 @@ public class MainController {
             @Override
             public void windowDeactivated(WindowEvent e) {}
         });
+        alleAnzeigenView.setAlleDatensätzeListeMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    String element = alleAnzeigenView.getSelectedItem();
+                    int nr = extractNumber(element);
+                    Table table = db.getTable(nr);
+                    zeigeTable(table);
+                    alleAnzeigenView.dispose();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        });
+    }
+
+    private int extractNumber(String element) {
+        int positionDesDoppelpunkts = element.indexOf(':');
+        String number = element.substring(0, positionDesDoppelpunkts);
+        return Integer.parseInt(number);
     }
 
     private void performExportButton(ActionEvent e) {
