@@ -10,6 +10,10 @@ import view.MainView;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +21,7 @@ public class MainController {
     private DAO db;
     private MainView mainView;
     private Logger logger = Logger.getLogger("MainControl");
+    private AlleAnzeigenView alleAnzeigenView;
 
     public MainController(DAO db, MainView mainView) {
         this.db = db;
@@ -72,7 +77,7 @@ public class MainController {
         // + im Fenster soll ein Export-Button angezeigt werden
         mainView.setEnabled(false);
 
-        AlleAnzeigenView alleAnzeigenView = new AlleAnzeigenView();
+        alleAnzeigenView = new AlleAnzeigenView();
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         alleAnzeigenView.setAlleDatensätzeListeDefaultModel(defaultListModel);
         for (Table table : db.getAllTables()) {
@@ -160,10 +165,33 @@ public class MainController {
     }
 
     private void performExportButton(ActionEvent e) {
-        System.out.println("Da hat einer den Export Button geklickt");
-        // TODO: hier soll natürlich mehr passieren
-        // z.B. eine Datei öffnen (evtl. ein DateiÖffnenDialog anzeigen),
+        // eine Datei öffnen (evtl. ein DateiÖffnenDialog anzeigen),
         // Inhalt des Listenfensters in Datei schreiben, Datei wieder schließen
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileHidingEnabled(false);
+        fileChooser.setVisible(true);
+        if (fileChooser.showSaveDialog(mainView) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            String filename = file.getAbsoluteFile().toString();
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+                // zweiter Filterdurchgang, weil Zugriff auf die Liste nicht möglich ist
+                String filter = alleAnzeigenView.getTextFieldText().toLowerCase();
+                for (Table table : db.getAllTables()) {
+                    String displayText = table.toString();
+                    if ( displayText.toLowerCase().contains(filter) )
+                        writer.write( displayText + "\n");
+                }
+                writer.close();
+            }
+            catch (IOException exception) {
+                System.out.println("Oh, nein, das ging nicht gut!");
+                exception.printStackTrace();
+            }
+        }
+        fileChooser.setVisible(false);
     }
 
     private void performHinzufügenButton(ActionEvent e) {
