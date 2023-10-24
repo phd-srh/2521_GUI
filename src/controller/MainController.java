@@ -9,6 +9,7 @@ import view.AlleAnzeigenView;
 import view.MainView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,6 +23,7 @@ public class MainController {
     private MainView mainView;
     private Logger logger = Logger.getLogger("MainControl");
     private AlleAnzeigenView alleAnzeigenView;
+    private Table letzterDatensatz;
 
     public MainController(DAO db, MainView mainView) {
         this.db = db;
@@ -42,7 +44,58 @@ public class MainController {
         mainView.setAlleAnzeigenButtonListener( this::performAlleAnzeigenButton );
         mainView.setRückwärtsButtonListener( this::performRückwärtsButton );
         mainView.setVorwärtsButtonListener( this::performVorwärtsButton );
+
+        mainView.setKategorieKomboBoxListener( this::performKategorieKomboBox );
+        mainView.setTextTextfeldKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                performTextfeldChanging();
+            }
+        });
     }
+
+    private void performTextfeldChanging() {
+        if (letzterDatensatz == null) return;
+
+        String text = mainView.getText();
+        if (letzterDatensatz.getText().equals(text)) {
+            mainView.setFarbeTextTextfeld(Color.WHITE);
+            if (mainView.getKategorie().equals(letzterDatensatz.getKategorie().getBezeichnung())) {
+                mainView.setSpeichernButtonEnabled(false);
+            }
+        }
+        else {
+            mainView.setFarbeTextTextfeld(Color.RED);
+            mainView.setSpeichernButtonEnabled(true);
+        }
+    }
+
+    private void performKategorieKomboBox(ActionEvent e) {
+        if (letzterDatensatz == null) return;
+
+        String kategorieText = mainView.getKategorie();
+        if (letzterDatensatz.getKategorie().getBezeichnung().equals(kategorieText)) {
+            mainView.setFarbeKategorieKomboBox(Color.WHITE);
+            if (mainView.getText().equals(letzterDatensatz.getText())) {
+                mainView.setSpeichernButtonEnabled(false);
+            }
+        }
+        else {
+            mainView.setFarbeKategorieKomboBox(Color.RED);
+            mainView.setSpeichernButtonEnabled(true);
+        }
+    }
+
+    private void zeigeTextInConsole(ActionEvent e) {
+        System.out.println("Holla, da ist was passiert!");
+    }
+
 
     private void performVorwärtsButton(ActionEvent e) {
         int id = mainView.getID();
@@ -239,6 +292,7 @@ public class MainController {
             mainView.setKategorie("");
         }
         else {
+            letzterDatensatz = t.clone();
             mainView.setID(t.getId());
             mainView.setText(t.getText());
             mainView.setKategorie(t.getKategorie().getBezeichnung());

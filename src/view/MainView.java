@@ -3,8 +3,8 @@ package view;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 public class MainView extends JFrame {
 
@@ -14,16 +14,7 @@ public class MainView extends JFrame {
     private JButton abfrageButton, hinzufügenButton, löschenButton, alleAnzeigenButton;
     private JButton vorwärtsButton, rückwärtsButton;
     private JComboBox<String> kategorieKomboBox;
-
-
-    private class ExitButtonDispose implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Eigene Klasse schließt MainView");
-            mainView.dispose();
-        }
-    }
-
+    private JButton speichernButton;
 
     public MainView() {
         this.mainView = this;
@@ -64,50 +55,20 @@ public class MainView extends JFrame {
 
         // bottomPanel
         abfrageButton = new JButton("Abfrage");
+        speichernButton = new JButton("Speichern");
+        speichernButton.setEnabled(false);
         hinzufügenButton = new JButton("Hinzufügen");
         löschenButton = new JButton("Löschen");
         alleAnzeigenButton = new JButton("Alle anzeigen");
-        JButton exitButton = new JButton("Beenden");
         vorwärtsButton = new JButton("->");
         rückwärtsButton = new JButton("<-");
         bottomPanel.add(rückwärtsButton);
         bottomPanel.add(abfrageButton);
+        bottomPanel.add(speichernButton);
         bottomPanel.add(hinzufügenButton);
         bottomPanel.add(löschenButton);
         bottomPanel.add(alleAnzeigenButton);
-        bottomPanel.add(exitButton);
         bottomPanel.add(vorwärtsButton);
-
-        // ExitButton mit Leben füllen:
-        // Methode (a) - eigene Klasse
-//        exitButton.addActionListener( new ExitButtonDispose() );
-
-        // Methode (b) - anonyme Klasse
-//        exitButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println("Anonyme Klasse schließt MainView");
-//                mainView.dispose();
-//            }
-//        });
-
-        // Methode (c) - Lambda Ausdruck
-        exitButton.addActionListener(
-                (ActionEvent e) -> {
-                    //System.out.println("Lambda Ausdruck schließt MainView");
-                    //showMessage("Lambda Ausdruck schließt MainView");
-// - das nervt -   if ( showConfirmation("Wirklich beenden?") )
-                        this.dispose();
-                }
-        );
-
-        // Methode (d) - Funktionales Interface
-//        exitButton.addActionListener( this::machWasWennManDenExitButtonKlickt );
-    }
-
-    private void machWasWennManDenExitButtonKlickt(ActionEvent e) {
-        System.out.println("Funktionales Interface schließt MainView");
-        this.dispose();
     }
 
     public int getID() {
@@ -178,6 +139,10 @@ public class MainView extends JFrame {
         abfrageButton.addActionListener(listener);
     }
 
+    public void setSpeichernButtonListener(ActionListener listener) {
+        speichernButton.addActionListener(listener);
+    }
+
     public void setHinzufügenButtonListener(ActionListener listener) {
         hinzufügenButton.addActionListener(listener);
     }
@@ -200,6 +165,26 @@ public class MainView extends JFrame {
 
     public void setKategorieKomboBoxModel(DefaultComboBoxModel<String> kategorieModel) {
         kategorieKomboBox.setModel(kategorieModel);
+    }
+
+    public void setSpeichernButtonEnabled(boolean enabled) {
+        speichernButton.setEnabled(enabled);
+    }
+
+    public void setFarbeTextTextfeld(Color background) {
+        textTextfeld.setBackground(background);
+    }
+
+    public void setFarbeKategorieKomboBox(Color background) {
+        kategorieKomboBox.getEditor().getEditorComponent().setBackground(background);
+    }
+
+    public void setTextTextfeldKeyListener(KeyListener listener) {
+        textTextfeld.addKeyListener(listener);
+    }
+
+    public void setKategorieKomboBoxListener(ActionListener listener) {
+        kategorieKomboBox.addActionListener(listener);
     }
 
     public static void main(String[] args) {
