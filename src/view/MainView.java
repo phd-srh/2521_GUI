@@ -15,6 +15,8 @@ public class MainView extends JFrame {
     private JButton vorwärtsButton, rückwärtsButton;
     private JComboBox<String> kategorieKomboBox;
     private JButton speichernButton;
+    private JButton löscheKategorieButton;
+    private JCheckBox leckerCheckBox;
 
     public MainView() {
         this.mainView = this;
@@ -30,7 +32,7 @@ public class MainView extends JFrame {
         // Hauptfenster
         setLayout(new BorderLayout());
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JPanel centerPanel = new JPanel(new GridLayout(3, 2));
+        JPanel centerPanel = new JPanel(new GridLayout(4, 2));
         JPanel bottomPanel = new JPanel(new FlowLayout());
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
@@ -51,7 +53,14 @@ public class MainView extends JFrame {
         centerPanel.add(new JLabel("Kategorie:"));
         kategorieKomboBox = new JComboBox<>();
         kategorieKomboBox.setEditable(true);
-        centerPanel.add(kategorieKomboBox);
+        JPanel kategoriePanel = new JPanel( new GridLayout(1,2) );
+        centerPanel.add(kategoriePanel);
+        kategoriePanel.add(kategorieKomboBox);
+        löscheKategorieButton = new JButton("Löschen");
+        kategoriePanel.add(löscheKategorieButton);
+        centerPanel.add( new JLabel("") );
+        leckerCheckBox = new JCheckBox("Lecker");
+        centerPanel.add(leckerCheckBox);
 
         // bottomPanel
         abfrageButton = new JButton("Abfrage");
@@ -117,6 +126,14 @@ public class MainView extends JFrame {
         // nicht gefunden, Kategorie muss ergänzt werden
         kategorieKomboBox.addItem(kategorie);
         kategorieKomboBox.setSelectedIndex( kategorieKomboBox.getItemCount()-1 );
+    }
+
+    public void setLecker(boolean lecker) {
+        leckerCheckBox.setSelected(lecker);
+    }
+
+    public boolean isLecker() {
+        return leckerCheckBox.isSelected();
     }
 
     public void showWarning(String message) {

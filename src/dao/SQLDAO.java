@@ -62,11 +62,12 @@ public class SQLDAO implements DAO {
             }
 
             PreparedStatement insertCommand = sqlConnection.prepareStatement(
-                    "INSERT INTO `table` (id, text, katid) VALUE (?, ?, ?)"
+                    "INSERT INTO `table` (id, text, katid, lecker) VALUE (?, ?, ?, ?)"
             );
             insertCommand.setInt(1, id);
             insertCommand.setString(2, table.getText());
             insertCommand.setInt(3, kid);
+            insertCommand.setString(4, table.isLecker() ? "1" : "0");
             return (insertCommand.executeUpdate() == 1);
         }
         catch (SQLException e) {
@@ -80,7 +81,7 @@ public class SQLDAO implements DAO {
     public Table getTable(int id) {
         try {
             PreparedStatement sqlCommand = sqlConnection.prepareStatement("""
-                      SELECT t.id AS tid, text, k.id AS kid, bezeichnung
+                      SELECT t.id AS tid, text, k.id AS kid, bezeichnung, lecker
                       FROM `table` AS t, kategorie AS k
                       WHERE t.katid = k.id
                       AND t.id = ?
@@ -104,7 +105,8 @@ public class SQLDAO implements DAO {
         Kategorie kategorie = new Kategorie(katid, bezeichnung);
         int tid = sqlResult.getInt("tid");
         String text = sqlResult.getString("text");
-        return new Table(tid, text, kategorie);
+        boolean lecker = (sqlResult.getString("lecker").charAt(0) == '1');
+        return new Table(tid, text, kategorie, lecker);
     }
 
     @Override
@@ -113,7 +115,7 @@ public class SQLDAO implements DAO {
         try {
             Statement sqlCommand = sqlConnection.createStatement();
             ResultSet sqlResult = sqlCommand.executeQuery("""
-                    SELECT t.id AS tid, text, k.id AS kid, bezeichnung
+                    SELECT t.id AS tid, text, k.id AS kid, bezeichnung, lecker
                     FROM `table` AS t, kategorie AS k
                     WHERE t.katid = k.id
                     """);
@@ -245,6 +247,22 @@ public class SQLDAO implements DAO {
     public void deleteKategorie(int id) {
         try {
             PreparedStatement deleteCommand = sqlConnection.prepareStatement(
+                    "DELETE FROM kategorie WHERE id = ?");
+            deleteCommand.setInt(1, id);
+            deleteCommand.execute();
+        }
+        catch (SQLException ignored) {}
+    }
+
+    @Override
+    public void deleteKategorieWithData(int id) {
+        try {
+            PreparedStatement deleteCommand = sqlConnection.prepareStatement(
+                    "DELETE FROM `table` WHERE katid = ?");
+            deleteCommand.setInt(1, id);
+            deleteCommand.execute();
+
+            deleteCommand = sqlConnection.prepareStatement(
                     "DELETE FROM kategorie WHERE id = ?");
             deleteCommand.setInt(1, id);
             deleteCommand.execute();

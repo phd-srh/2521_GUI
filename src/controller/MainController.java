@@ -251,6 +251,7 @@ public class MainController {
         int id = mainView.getID();
         String text = mainView.getText();
         String kategorieBezeichnung = mainView.getKategorie();
+        boolean lecker = mainView.isLecker();
 
         if (text.isBlank() || kategorieBezeichnung.isBlank()) {
             mainView.showWarning("Bitte sinnvolle Daten eingeben!");
@@ -268,7 +269,7 @@ public class MainController {
             kategorie = new Kategorie(kategorieID, kategorieBezeichnung);
             db.insertKategorie(kategorieID, kategorie);
         }
-        Table neuerDatensatz = new Table(id, text, kategorie);
+        Table neuerDatensatz = new Table(id, text, kategorie, lecker);
         if ( db.insertTable(id, neuerDatensatz) )
             mainView.showMessage("Datensatz erfolgreich hinzugefügt!");
         else
@@ -290,12 +291,14 @@ public class MainController {
             mainView.clearID();
             mainView.setText("");
             mainView.setKategorie("");
+            mainView.setLecker(false);
         }
         else {
             letzterDatensatz = t.clone();
             mainView.setID(t.getId());
             mainView.setText(t.getText());
             mainView.setKategorie(t.getKategorie().getBezeichnung());
+            mainView.setLecker(t.isLecker());
         }
     }
 

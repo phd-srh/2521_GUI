@@ -20,10 +20,10 @@ public class TempDAO implements DAO {
         insertKategorie( 3, new Kategorie(3, "Stuhl") );
 
         // einige Datensätze einfügen
-        insertTable( 1, new Table(1, "Test1", getKategorieByID(1)) );
-        insertTable( 2, new Table(2, "Apfel", getKategorieByID(2)) );
-        insertTable( 3, new Table(3, "Keksdose", getKategorieByID(3)) );
-        insertTable( 4, new Table(4, "Bleistift", getKategorieByID(2)) );
+        insertTable( 1, new Table(1, "Test1", getKategorieByID(1), false) );
+        insertTable( 2, new Table(2, "Apfel", getKategorieByID(2), false) );
+        insertTable( 3, new Table(3, "Keksdose", getKategorieByID(3), true) );
+        insertTable( 4, new Table(4, "Bleistift", getKategorieByID(2), false) );
     }
 
     @Override
@@ -107,6 +107,11 @@ public class TempDAO implements DAO {
 
     @Override
     public void deleteKategorie(int id) {
+
+    }
+
+    @Override
+    public void deleteKategorieWithData(int id) {
 
     }
 

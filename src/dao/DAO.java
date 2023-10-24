@@ -20,5 +20,6 @@ public interface DAO {
     List<Kategorie> getAllKategorien();
     boolean updateKategorie(int id, Kategorie kategorie);
     void deleteKategorie(int id);
+    void deleteKategorieWithData(int id);
     int getLastKategorieID();
 }
